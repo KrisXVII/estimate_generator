@@ -24,10 +24,21 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
       - name: Build
         run: |
+          rm -rf build dist
+
           if [[ "$RUNNER_OS" == "Windows" ]]; then
-           pyinstaller --onefile --windowed --icon=assets/cost_estimate_icon_213134.ico --name EstimateGenerator src/main.py
+            pyinstaller --onefile --windowed --icon=assets/cost_estimate_icon_213134.ico --name EstimateGenerator src/main.py
+            # Verify Windows build
+            if [ ! -f "dist/EstimateGenerator.exe" ]; then
+              echo "Windows build failed - no executable created"
+              exit 1
+            fi
           else
-           pyinstaller --windowed --name EstimateGenerator --icon assets/cost_estimate_icon_213134.icns --osx-bundle-identifier com.yourdomain.EstimateGenerator src/main.py
+            pyinstaller --windowed --name EstimateGenerator --icon assets/cost_estimate_icon_213134.icns --osx-bundle-identifier com.yourdomain.EstimateGenerator src/main.py
+            if [ ! -d "dist/EstimateGenerator.app" ]; then
+              echo "macOS build failed - no app bundle created"
+              exit 1
+            fi
           fi
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -39,8 +50,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
-      - name: "Release v${{ steps.version.outputs.version }}"
-        files: |
-          dist/EstimateGenerator.exe
-          dist/EstimateGenerator.dmg
-        body: "Release v${{ steps.version.outputs.version }}"
+          name: "Release v${{ steps.version.outputs.version }}"
+          files: |
+            dist/EstimateGenerator.exe
+            dist/EstimateGenerator.dmg
+          body: "Release v${{ steps.version.outputs.version }}"
