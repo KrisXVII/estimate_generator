@@ -1,12 +1,30 @@
-import sys  # for command line arguments
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
+import sys
+import shutil
+from pathlib import Path
+from PyQt5.QtWidgets import QApplication
 from app.views.main_window import MainWindow
 
-app = QApplication(sys.argv)  # application instance, pass [] if won't be using command line arguments
+TMP_DIR = Path(__file__).parent.parent / "tmp"
 
-window = MainWindow()
-window.show()  # windows are hidden by default
+def cleanup_tmp():
+    try:
+        for item in TMP_DIR.glob("*"):
+            if item.is_file():
+                item.unlink()
+            elif item.is_dir():
+                shutil.rmtree(item)
+        print(f"Cleaned {TMP_DIR}")
+    except Exception as e:
+        print(f"Cleanup error: {e}")
 
-app.exec_()
+
+# Main application execution
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+
+    window = MainWindow()
+    window.show()
+
+    app.aboutToQuit.connect(cleanup_tmp)
+
+    sys.exit(app.exec_())

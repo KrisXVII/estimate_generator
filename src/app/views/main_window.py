@@ -6,6 +6,10 @@ from docx.shared import Inches, Pt
 from datetime import date
 from .const import COMPANY, ADDRESS, CITY, TAX_CODE, VAT_ID, EMAIL
 import uuid
+import sys
+import subprocess
+import os
+from pathlib import Path
 
 def generate_estimate():
     document = Document()
@@ -48,7 +52,25 @@ def generate_estimate():
     date_sig = date.today().strftime('%d-%m-%Y')  # file signature
     uuid_sig = uuid.uuid4().hex[:8]
     document.add_paragraph("Corpo documento...")
-    document.save("Preventivo_{date}_{uuid}.docx".format(date=date_sig, uuid=uuid_sig))
+
+    project_root = Path(__file__).parent.parent.parent.parent
+    tmp_dir = project_root / "tmp"
+
+    filename = "Preventivo_{date}_{uuid}.docx".format(date=date_sig, uuid=uuid_sig)
+    directory = tmp_dir / filename
+    document.save(directory)
+    open_file(directory)
+
+def open_file(filepath):
+    try:
+        if sys.platform == "win32":
+            os.startfile(filepath)
+        elif sys.platform == "darwin":
+            subprocess.run(["open", filepath])
+        else:  # Linux
+            subprocess.run(["xdg-open", filepath])
+    except Exception as e:
+        print(f"Error opening file: {e}")
 
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
