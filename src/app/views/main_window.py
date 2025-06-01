@@ -29,8 +29,7 @@ def generate_estimate():
     middle_col = table.cell(0, 1)
     middle_col.width = Inches(1.5)
     middle_para = middle_col.paragraphs[0]
-    middle_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    middle_para.add_run("\n\n\n")
+    middle_para.add_run("\n\n")
     middle_para.add_run("Preventivo").bold = True
 
     # col3
