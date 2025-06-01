@@ -16,7 +16,7 @@ jobs:
           pip install pyinstaller
       - name: Build .exe
         run: |
-          pyinstaller --onefile --windowed --icon=assets/cost_estimate_icon_213134.ico main.py
+          pyinstaller --onefile --windowed --icon=assets/cost_estimate_icon_213134.ico src/main.py
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
