@@ -4,3 +4,5 @@ src/app/views/const.py
 __pycache__/
 *.py[cod]
 .DS_Store
+.build/
+.dist/
