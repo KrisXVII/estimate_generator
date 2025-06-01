@@ -1,4 +1,5 @@
 
-const.py
-
+src/app/views/const.py
 .idea/
+__pycache__/
+*.py[cod]
