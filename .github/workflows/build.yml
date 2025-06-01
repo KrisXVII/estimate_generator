@@ -27,7 +27,7 @@ jobs:
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             pyinstaller --onefile --windowed --icon=assets/cost_estimate_icon_213134.ico src/main.py
           else
-            pyinstaller --windowed --name MyApp --icon assets/cost_estimate_icon_213134.icns --osx-bundle-identifier src/main.py
+            pyinstaller --windowed --name EstimateGenerator --icon assets/cost_estimate_icon_213134.icns --osx-bundle-identifier com.yourdomain.EstimateGenerator src/main.py
           fi
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
