@@ -6,19 +6,19 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.9'
-    - name: Install dependencies
-      run: |
-        pip install pyinstaller
-    - name: Build .exe
-      run: |
-        pyinstaller --onefile --windowed --icon=assets/cost_estimate_icon_213134.ico main.py
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: EstimateGenerator_Windows
-        path: dist/
+      - uses: actions/checkout@v4  # Updated from v2
+      - name: Set up Python
+        uses: actions/setup-python@v5  # Updated from v2
+        with:
+          python-version: '3.11'  # Use a modern Python version
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller
+      - name: Build .exe
+        run: |
+          pyinstaller --onefile --windowed --icon=assets/cost_estimate_icon_213134.ico main.py
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: EstimateGenerator_Windows
+          path: dist/
