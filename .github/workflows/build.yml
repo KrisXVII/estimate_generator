@@ -39,8 +39,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
-          name: "Release v${{ steps.version.outputs.version }}"
-          files: |
-            dist/EstimateGenerator.exe
-            dist/EstimateGenerator.dmg
-          body: "Release v${{ steps.version.outputs.version }}"
+      - name: "Release v${{ steps.version.outputs.version }}"
+        files: |
+          dist/EstimateGenerator.exe
+          dist/EstimateGenerator.dmg
+        body: "Release v${{ steps.version.outputs.version }}"
