@@ -12,3 +12,4 @@ class MainWindow(QMainWindow):
         label.setAlignment(Qt.AlignCenter)
 
         self.setCentralWidget(label)
+        self.setFixedSize(QSize(400, 300))
