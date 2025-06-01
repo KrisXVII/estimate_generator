@@ -1,0 +1,30 @@
+name: Build and Publish
+on:
+  push:
+    branches: [ "main" ]
+    # branches: [ "main", "release/*" ]  # Alternative: Include release branches
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+      - name: Build
+        run: pyinstaller --onefile --windowed --icon=assets/icon.ico main.py
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ runner.os }}_Build
+          path: dist/
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/*.exe
+            dist/*.dmg
+            dist/*.AppImage
