@@ -45,6 +45,17 @@ jobs:
         with:
           name: ${{ runner.os }}_Build
           path: dist/
+      - name: Download Windows Artifact
+        if: github.ref == 'refs/heads/main' && matrix.os == 'windows-latest'
+        uses: actions/download-artifact@v4
+        with:
+          name: windows_Build
+
+      - name: Download macOS Artifact
+        if: github.ref == 'refs/heads/main' && matrix.os == 'macos-latest'
+        uses: actions/download-artifact@v4
+        with:
+          name: macOS_Build
       - name: Create Release
         if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v1
