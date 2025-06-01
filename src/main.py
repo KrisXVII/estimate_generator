@@ -2,6 +2,7 @@ import sys
 import shutil
 from pathlib import Path
 from PyQt5.QtWidgets import QApplication
+from PyQt5.QtGui import QIcon
 from app.views.main_window import MainWindow
 
 TMP_DIR = Path(__file__).parent.parent / "tmp"
@@ -22,7 +23,12 @@ def cleanup_tmp():
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
+    icon = QIcon('assets/estimate.png')
+    app.setWindowIcon(icon)
+
     window = MainWindow()
+
+    window.setWindowIcon(icon)
     window.show()
 
     app.aboutToQuit.connect(cleanup_tmp)
