@@ -13,3 +13,7 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(label)
         self.setFixedSize(QSize(400, 300))
+
+
+def generate_estimate():
+    print("let's do it")
