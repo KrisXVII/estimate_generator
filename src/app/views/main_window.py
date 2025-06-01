@@ -4,7 +4,7 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Inches, Pt
 from datetime import date
-from .const import COMPANY, ADDRESS, CITY, TAX_CODE, VAT_ID
+from .const import COMPANY, ADDRESS, CITY, TAX_CODE, VAT_ID, EMAIL
 import uuid
 
 def generate_estimate():
@@ -43,6 +43,7 @@ def generate_estimate():
     right_para.add_run(CITY + "\n")
     right_para.add_run(TAX_CODE + "\n")
     right_para.add_run(VAT_ID + "\n")
+    right_para.add_run(EMAIL + "\n")
 
     date_sig = date.today().strftime('%d-%m-%Y')  # file signature
     uuid_sig = uuid.uuid4().hex[:8]
