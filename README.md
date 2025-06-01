@@ -3,3 +3,6 @@
 
 ### To generate/update requirements.txt
     pip freeze > requirements.txt
+
+### To install packages from requirements.txt
+    pip install requirements.txt
