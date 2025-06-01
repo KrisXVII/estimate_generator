@@ -46,4 +46,3 @@ jobs:
             dist/EstimateGenerator.exe
             dist/EstimateGenerator.dmg
           body: "Release v${{ steps.version.outputs.version }}"
-      -
