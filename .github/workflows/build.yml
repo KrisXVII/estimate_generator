@@ -17,12 +17,17 @@ jobs:
           python-version: '3.12.3'
       - name: Install dependencies
         run: pip install pyinstaller
+      - name: Extract Version
+        id: version
+        run: |
+          VERSION=$(grep '__version__' __version__.py | cut -d '"' -f 2)
+          echo "version=$VERSION" >> $GITHUB_OUTP
       - name: Build
         run: |
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             pyinstaller --onefile --windowed --icon=assets/cost_estimate_icon_213134.ico src/main.py
           else
-            pyinstaller --windowed --name MyApp --icon assets/cost_estimate_icon_213134.icns --osx-bundle-identifier com.yourdomain.MyApp src/main.py
+            pyinstaller --windowed --name MyApp --icon assets/cost_estimate_icon_213134.icns --osx-bundle-identifier src/main.py
           fi
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -33,7 +38,9 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ github.ref_name }}
+          name: "Release v${{ steps.version.outputs.version }}"
           files: |
             dist/*.exe
             dist/*.dmg
-          body: "Auto-generated release for ${{ github.sha }}"
+          body: "Release v${{ steps.version.outputs.version }}"
