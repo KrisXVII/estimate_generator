@@ -5,6 +5,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Inches, Pt
 from datetime import date
 from .const import COMPANY, ADDRESS, CITY, TAX_CODE, VAT_ID
+import uuid
 
 def generate_estimate():
     document = Document()
@@ -44,9 +45,10 @@ def generate_estimate():
     right_para.add_run(TAX_CODE + "\n")
     right_para.add_run(VAT_ID + "\n")
 
-    date_sig = date.today().strftime('%d-%m-%Y')
-    document.add_paragraph("Main document content goes here...")
-    document.save("Preventivo_{date}.docx".format(date=date_sig))
+    date_sig = date.today().strftime('%d-%m-%Y')  # file signature
+    uuid_sig = uuid.uuid4().hex[:8]
+    document.add_paragraph("Corpo documento...")
+    document.save("Preventivo_{date}_{uuid}.docx".format(date=date_sig, uuid=uuid_sig))
 
 class MainWindow(QMainWindow):
     def __init__(self, *args, **kwargs):
