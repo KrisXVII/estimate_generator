@@ -101,6 +101,6 @@ jobs:
           tag_name: ${{ steps.get_version.outputs.VERSION }}
           files: |
             Estimate-Generator_Win.exe
-            Estimate-Generator.app/**/*
+            Estimate-Generator_MacOS
           body: |
             Version ${{ steps.get_version.outputs.VERSION }}
