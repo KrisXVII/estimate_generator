@@ -23,9 +23,10 @@ jobs:
 
     - name: Build Windows executable
       run: >
-        pyinstaller --onefile --windowed --name "Estimate-Generator_Win.exe" 
-        --hidden-import=app --paths=src 
-        --icon=assets/cost_estimate_icon_213134.ico src/main.py
+        pyinstaller --onefile --windowed --name "Estimate-Generator_Win.exe" \
+                  --hidden-import=app --paths=src \
+                  --collect-all docx \
+                  --icon=assets/cost_estimate_icon_213134.icns src/main.py
 
     - name: Upload Windows artifact
       uses: actions/upload-artifact@v4
@@ -50,10 +51,13 @@ jobs:
         pip install -r requirements.txt
 
     - name: Build macOS executable
-      run: >
-        pyinstaller --windowed --name "Estimate-Generator_MacOS"
-        --hidden-import=app --paths=src
-        --icon=assets/cost_estimate_icon_213134.icns src/main.py
+      run: pyinstaller --onefile --windowed --name "Estimate-Generator_MacOS" \
+          --hidden-import=app --paths=src \
+          --collect-all docx \
+          --icon=assets/cost_estimate_icon_213134.icns src/main.py
+
+    - name: Make executable
+      run: chmod +x dist/Estimate-Generator_MacOS
 
     - name: Upload macOS artifact
       uses: actions/upload-artifact@v4

@@ -53,12 +53,11 @@ def generate_estimate():
     uuid_sig = uuid.uuid4().hex[:8]
     document.add_paragraph("Corpo documento...")
 
-    project_root = Path(__file__).parent.parent.parent.parent
-    tmp_dir = project_root / "tmp"
-
+    downloads_dir = Path.home() / "Downloads"
     filename = "Preventivo_{date}_{uuid}.docx".format(date=date_sig, uuid=uuid_sig)
-    directory = tmp_dir / filename
-    document.save(directory)
+
+    directory = downloads_dir / filename
+    document.save(str(directory))
     open_file(directory)
 
 def open_file(filepath):
