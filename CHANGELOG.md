@@ -9,7 +9,11 @@ This file was created with ChangelogManager 0.0.1, do not modify it directly.
 
 ## [Unreleased]
 
-## [1.0.2] - 2025-10-04
+## [1.0.4] - 2025-10-04
+### Fixed
+- MacOS package build
+
+## [1.0.3] - 2025-10-04
 ### Fixed
 - MacOS package zipping in build
 
