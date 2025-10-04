@@ -57,8 +57,10 @@ jobs:
         --collect-all docx
         --icon=assets/cost_estimate_icon_213134.icns src/main.py
 
-    - name: Make executable
-      run: chmod +x dist/Estimate-Generator
+    - name: Zip macOS app
+      run: |
+        cd dist
+        zip -r Estimate-Generator-MacOS.zip Estimate-Generator.app
 
     - name: Upload macOS artifact
       uses: actions/upload-artifact@v4
@@ -104,6 +106,6 @@ jobs:
           tag_name: ${{ steps.get_version.outputs.VERSION }}
           files: |
             Estimate-Generator_Win.exe
-            Estimate-Generator.app
+            Estimate-Generator-MacOS.zip
           body: |
             Version ${{ steps.get_version.outputs.VERSION }}
