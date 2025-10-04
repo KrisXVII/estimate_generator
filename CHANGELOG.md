@@ -9,6 +9,10 @@ This file was created with ChangelogManager 0.0.1, do not modify it directly.
 
 ## [Unreleased]
 
+## [1.0.6] - 2025-10-04
+### Fixed
+- MacOS zip all application
+
 ## [1.0.5] - 2025-10-04
 ### Fixed
 - MacOS package published name
