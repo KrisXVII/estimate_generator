@@ -9,6 +9,10 @@ This file was created with ChangelogManager 0.0.1, do not modify it directly.
 
 ## [Unreleased]
 
+## [0.1.3] - 2025-10-04
+### Fixed
+- Missing hidden module from pyinstaller
+
 ## [0.1.2] - 2025-10-04
 ### Changed
 - MacOS artifact package generation
