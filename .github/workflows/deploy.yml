@@ -75,7 +75,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git tag ${{ steps.get_version.outputs.VERSION }}
-          git push origin ${{ steps.get_version.outputs.VERSION }}
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git ${{ steps.get_version.outputs.VERSION }}
 
       - name: Download Windows artifact
         uses: actions/download-artifact@v4
