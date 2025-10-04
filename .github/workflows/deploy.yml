@@ -57,11 +57,19 @@ jobs:
         --collect-all docx
         --icon=assets/cost_estimate_icon_213134.icns src/main.py
 
+    - name: Create .app zip
+      run: |
+        mkdir -p temp_release
+        cp -r dist/Estimate-Generator.app temp_release/
+
+        cd temp_release
+        zip -r ../Estimate-Generator-MacOS.zip .
+
     - name: Upload macOS artifact
       uses: actions/upload-artifact@v4
       with:
-        name: Estimate-Generator_MacOS
-        path: dist/Estimate-Generator.app
+        name: Estimate_Generator_MacOS
+        path: Estimate-Generator-MacOS.zip
 
   create-release:
     needs: [ build-windows, build-macos ]
@@ -93,7 +101,7 @@ jobs:
       - name: Download macOS artifact
         uses: actions/download-artifact@v4
         with:
-          name: Estimate-Generator_MacOS
+          name: Estimate_Generator_MacOS
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
@@ -101,6 +109,6 @@ jobs:
           tag_name: ${{ steps.get_version.outputs.VERSION }}
           files: |
             Estimate-Generator_Win.exe
-            Estimate-Generator_MacOS
+            Estimate-Generator_MacOS.zip
           body: |
             Version ${{ steps.get_version.outputs.VERSION }}
