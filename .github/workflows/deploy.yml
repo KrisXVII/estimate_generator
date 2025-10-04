@@ -64,7 +64,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: Estimate-Generator_MacOS
-        path: dist/Estimate-Generator_MacOS
+        path: dist/Estimate-Generator_MacOS.app
 
   create-release:
     needs: [ build-windows, build-macos ]
