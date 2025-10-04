@@ -57,6 +57,11 @@ jobs:
         --collect-all docx
         --icon=assets/cost_estimate_icon_213134.icns src/main.py
 
+    - name: Fix permissions and quarantine
+      run: |
+       chmod +x dist/Estimate-Generator.app/Contents/MacOS/Estimate-Generator
+       xattr -dr com.apple.quarantine dist/Estimate-Generator.app
+
     - name: Create .app zip
       run: |
         mkdir -p temp_release
