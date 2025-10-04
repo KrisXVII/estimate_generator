@@ -9,12 +9,16 @@ This file was created with ChangelogManager 0.0.1, do not modify it directly.
 
 ## [Unreleased]
 
-## [0.1.1] - 2025-09-30
+## [0.1.2] - 2025-10-04
+### Changed
+- MacOS artifact package generation
+
+## [0.1.1] - 2025-10-04
 ### Added
 - Tag management for releases
 ### Fixed
 - Version control
 
-## [0.1.0] - 2025-09-30
+## [0.1.0] - 2025-10-04
 ### Added
 - CI/CD workflow
