@@ -9,6 +9,10 @@ This file was created with ChangelogManager 0.0.1, do not modify it directly.
 
 ## [Unreleased]
 
+## [1.0.1] - 2025-10-04
+### Fixed
+- MacOS package bundling
+
 ## [1.0.0] - 2025-10-04
 ### Changed
 - File handling with user's Download directory
