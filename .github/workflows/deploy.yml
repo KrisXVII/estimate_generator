@@ -52,7 +52,7 @@ jobs:
 
     - name: Build macOS executable
       run: >
-        pyinstaller --windowed --name "Estimate-Generator_MacOS"
+        pyinstaller --windowed --name "Estimate-Generator"
         --hidden-import=app --paths=src
         --collect-all docx
         --icon=assets/cost_estimate_icon_213134.icns src/main.py
@@ -64,7 +64,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: Estimate-Generator_MacOS
-        path: dist/Estimate-Generator_MacOS.app
+        path: dist/Estimate-Generator.app
 
   create-release:
     needs: [ build-windows, build-macos ]
@@ -104,6 +104,6 @@ jobs:
           tag_name: ${{ steps.get_version.outputs.VERSION }}
           files: |
             Estimate-Generator_Win.exe
-            Estimate-Generator_MacOS
+            Estimate-Generator.app
           body: |
             Version ${{ steps.get_version.outputs.VERSION }}
