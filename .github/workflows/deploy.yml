@@ -61,6 +61,24 @@ jobs:
     needs: [ build-windows, build-macos ]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Read version from file
+        id: get_version
+        run: |
+          VERSION=$(python -c "from src import __version__; print(__version__.__version__)")
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create Git Tag
+        run: |
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
+          git tag ${{ steps.get_version.outputs.VERSION }}
+          git push origin ${{ steps.get_version.outputs.VERSION }}
+
       - name: Download Windows artifact
         uses: actions/download-artifact@v4
         with:
@@ -74,12 +92,9 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
           files: |
             Estimate-Generator_Win.exe
             Estimate-Generator_MacOS
           body: |
-            Cross-platform release built from main branch
-
-            **Downloads:**
-            - `Estimate-Generator_Win.exe`
-            - `Estimate-Generator_MacOS`
+            Version ${{ steps.get_version.outputs.VERSION }}
