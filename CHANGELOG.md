@@ -9,6 +9,15 @@ This file was created with ChangelogManager 0.0.1, do not modify it directly.
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-10-05
+### Added
+- Local DB implementation with SQLite
+- New front end page for editing local DB data
+### Changed
+- Collecting all app module content with --collect-all option in deploy file
+### Removed
+- tmp directory from project 
+
 ## [1.0.8] - 2025-10-05
 ### Fixed
 - MacOS zip naming problem for release
