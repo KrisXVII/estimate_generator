@@ -57,10 +57,16 @@ jobs:
         --collect-all docx
         --icon=assets/cost_estimate_icon_213134.icns src/main.py
 
-    - name: Fix permissions and quarantine
+    - name: List downloaded files
       run: |
-       chmod +x dist/Estimate-Generator.app/Contents/MacOS/Estimate-Generator
-       xattr -dr com.apple.quarantine dist/Estimate-Generator.app
+        echo "=== Current directory ==="
+        pwd
+        echo "=== Files in current directory ==="  
+        ls -la
+        echo "=== Files from Windows artifact ==="
+        ls -la Estimate_Generator_Win.exe || echo "No Windows exe"
+        echo "=== Files from macOS artifact ==="
+        ls -la *.zip || echo "No zip files"
 
     - name: Create .app zip
       run: |
