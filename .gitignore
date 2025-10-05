@@ -7,3 +7,4 @@ build/
 dist/
 *.dmg
 /tmp/
+*_config.json
