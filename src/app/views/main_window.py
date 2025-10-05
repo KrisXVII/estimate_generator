@@ -2,14 +2,17 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.shared import Inches, Pt
+from docx.shared import Inches
 from datetime import date
-from .const import COMPANY, ADDRESS, CITY, TAX_CODE, VAT_ID, EMAIL
 import uuid
 import sys
 import subprocess
 import os
 from pathlib import Path
+from app.views.custom_form_field import FormField
+from app.database.db import SettingsDB
+
+db = SettingsDB()
 
 def generate_estimate():
     document = Document()
@@ -42,12 +45,12 @@ def generate_estimate():
     right_para = right_col.paragraphs[0]
     right_para.alignment = WD_ALIGN_PARAGRAPH.RIGHT
 
-    right_para.add_run(COMPANY + "\n")
-    right_para.add_run(ADDRESS + "\n")
-    right_para.add_run(CITY + "\n")
-    right_para.add_run(TAX_CODE + "\n")
-    right_para.add_run(VAT_ID + "\n")
-    right_para.add_run(EMAIL + "\n")
+    right_para.add_run(db.get_setting('company') + "\n")
+    right_para.add_run(db.get_setting('address') + "\n")
+    right_para.add_run(db.get_setting('city') + "\n")
+    right_para.add_run(db.get_setting('tax_code') + "\n")
+    right_para.add_run(db.get_setting('vat_id') + "\n")
+    right_para.add_run(db.get_setting('email') + "\n")
 
     date_sig = date.today().strftime('%d-%m-%Y')  # file signature
     uuid_sig = uuid.uuid4().hex[:8]
@@ -72,17 +75,91 @@ def open_file(filepath):
         print(f"Error opening file: {e}")
 
 class MainWindow(QMainWindow):
+    def show_settings_page(self):
+        # Redirects to settings page
+        self.stacked_widget.setCurrentIndex(1)
+        self.setFixedSize(QSize(600, 700))
+
+    def show_main_page(self):
+        # Redirect to main page
+        self.stacked_widget.setCurrentIndex(0)
+        self.setFixedSize(QSize(500, 400))
+
+    def create_settings_page(self):
+
+        widget = QWidget()
+        layout = QVBoxLayout(widget)
+        self.setFixedSize(QSize(500, 800))
+
+        self.company_field = FormField("Nome Azienda", db.get_setting('company'))
+        self.address_field = FormField("Indirizzo", db.get_setting('address'))
+        self.city_field = FormField("Città", db.get_setting('city'))
+        self.tax_code_field = FormField("Codice Fiscale", db.get_setting('tax_code'), "[A-Z0-9]{0,16}")
+        self.vat_field = FormField("Partita IVA", db.get_setting('vat_id'))
+        self.email_field = FormField("Email", db.get_setting('email'))
+
+        button_layout = QHBoxLayout()
+
+        save_btn = QPushButton("Salva")
+        save_btn.clicked.connect(self.save_settings)
+
+        back_btn = QPushButton("Indietro")
+        back_btn.clicked.connect(self.show_main_page)
+
+        layout.addWidget(self.company_field)
+        layout.addWidget(self.address_field)
+        layout.addWidget(self.city_field)
+        layout.addWidget(self.tax_code_field)
+        layout.addWidget(self.vat_field)
+        layout.addWidget(self.email_field)
+
+        button_layout.addWidget(save_btn)
+        button_layout.addWidget(back_btn)
+        layout.addLayout(button_layout)
+
+        return widget
+
+    def save_settings(self):
+
+        params = {
+            "company": self.company_field.input.text(),
+            "address": self.address_field.input.text(),
+            "city": self.city_field.input.text(),
+            "tax_code": self.tax_code_field.input.text(),
+            "vat_id": self.vat_field.input.text(),
+            "email": self.email_field.input.text()
+        }
+
+        db.update_settings(params)
+        QMessageBox.information(self, "Successo", "Dati salvati con successo!")
+
+        self.show_main_page()
+
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
+
+        self.stacked_widget = QStackedWidget()
+        self.setCentralWidget(self.stacked_widget)
+
         central_widget = QWidget()
-        self.setCentralWidget(central_widget)
         layout = QVBoxLayout(central_widget)
 
-        self.setWindowTitle("Genera preventivo")
+        self.setWindowTitle("Generatore template preventivo")
+
+        settings_btn = QPushButton("Modifica dati personali")
+        settings_btn.clicked.connect(self.show_settings_page)
+        settings_btn.setFixedHeight(100)
 
         btn = QPushButton("Genera Preventivo")
         btn.clicked.connect(generate_estimate)
         btn.setFixedHeight(100)
+
+        layout.addWidget(settings_btn)
         layout.addWidget(btn)
+
+        self.stacked_widget.addWidget(central_widget)
+
+        settings_page = self.create_settings_page()
+        self.stacked_widget.addWidget(settings_page)
 
         self.setFixedSize(QSize(500, 400))

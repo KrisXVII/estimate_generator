@@ -24,7 +24,8 @@ jobs:
     - name: Build Windows executable
       run: >
         pyinstaller --onefile --windowed --name "Estimate-Generator_Win.exe"
-        --hidden-import=app --paths=src
+        --paths=src
+        --collect-all app
         --collect-all docx
         --icon=assets/cost_estimate_icon_213134.ico src/main.py
 
@@ -53,7 +54,8 @@ jobs:
     - name: Build macOS application
       run: >
         pyinstaller --windowed --name "Estimate-Generator"
-        --hidden-import=app --paths=src
+        --paths=src
+        --collect-all app
         --collect-all docx
         --icon=assets/cost_estimate_icon_213134.icns src/main.py
 
