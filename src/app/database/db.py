@@ -7,7 +7,11 @@ def get_db_path():
     if getattr(sys, 'frozen', False):
         # Running as bundled app - use ~/Library/Application Support/
         app_name = "EstimateGenerator"
-        app_support_dir = Path.home() / "Library" / "Application Support" / app_name
+        if sys.platform == "darwin":  # macOS
+            app_support_dir = Path.home() / "Library" / "Application Support" / app_name
+        else:
+            app_support_dir = Path.home() / "AppData" / "Roaming" / app_name
+
     else:
         # Development - use project root
         app_support_dir = Path(__file__).parent.parent.parent
