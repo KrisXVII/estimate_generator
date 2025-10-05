@@ -1,6 +1,4 @@
 import sys
-import shutil
-from pathlib import Path
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QIcon
 from app.views.main_window import MainWindow
