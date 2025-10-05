@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.shared import Inches, Pt
+from docx.shared import Inches
 from datetime import date
 from .const import COMPANY, ADDRESS, CITY, TAX_CODE, VAT_ID, EMAIL
 import uuid
