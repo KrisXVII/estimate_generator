@@ -4,14 +4,13 @@ from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Inches
 from datetime import date
-from .const import COMPANY, ADDRESS, CITY, TAX_CODE, VAT_ID, EMAIL
 import uuid
 import sys
 import subprocess
 import os
 from pathlib import Path
 from app.views.custom_form_field import FormField
-from app.config_manager import ConfigManager
+from database import SettingsDB
 
 def generate_estimate():
     document = Document()
@@ -19,6 +18,8 @@ def generate_estimate():
     document.sections[0].header_distance = Inches(1.5)
     table = header.add_table(rows=1, cols=3, width=Inches(6.5))  # Full page width
     table.autofit = False
+
+    db = SettingsDB()
 
     # col1
     left_col = table.cell(0, 0)
@@ -44,12 +45,12 @@ def generate_estimate():
     right_para = right_col.paragraphs[0]
     right_para.alignment = WD_ALIGN_PARAGRAPH.RIGHT
 
-    right_para.add_run(COMPANY + "\n")
-    right_para.add_run(ADDRESS + "\n")
-    right_para.add_run(CITY + "\n")
-    right_para.add_run(TAX_CODE + "\n")
-    right_para.add_run(VAT_ID + "\n")
-    right_para.add_run(EMAIL + "\n")
+    right_para.add_run(db.get_setting('company') + "\n")
+    right_para.add_run(db.get_setting('address') + "\n")
+    right_para.add_run(db.get_setting('city') + "\n")
+    right_para.add_run(db.get_setting('tax_code') + "\n")
+    right_para.add_run(db.get_setting('vat_id') + "\n")
+    right_para.add_run(db.get_setting('email') + "\n")
 
     date_sig = date.today().strftime('%d-%m-%Y')  # file signature
     uuid_sig = uuid.uuid4().hex[:8]
@@ -120,27 +121,24 @@ class MainWindow(QMainWindow):
 
     def save_settings(self):
 
+        db = SettingsDB()
+
         params = {
-            "company_name": self.company_field.input.text(),
+            "company": self.company_field.input.text(),
             "address": self.address_field.input.text(),
             "city": self.city_field.input.text(),
             "tax_code": self.tax_code_field.input.text(),
-            "vat": self.vat_field.input.text(),
+            "vat_id": self.vat_field.input.text(),
             "email": self.email_field.input.text()
         }
 
-        if self.config_manager.save_config(params):
-            QMessageBox.information(self, "Successo", "Dati salvati con successo!")
-            self.current_config = params
-            self.show_main_page()
-        else:
-            QMessageBox.critical(self, "Errore", "Impossibile salvare i dati!")
+        db.update_settings(params)
+        QMessageBox.information(self, "Successo", "Dati salvati con successo!")
 
         self.show_main_page()
 
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
-        self.config_manager = ConfigManager()
 
         self.stacked_widget = QStackedWidget()
         self.setCentralWidget(self.stacked_widget)
