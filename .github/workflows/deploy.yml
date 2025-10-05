@@ -27,6 +27,7 @@ jobs:
         --paths=src
         --collect-all app
         --collect-all docx
+        --add-data="assets/estimate.png;assets"
         --icon=assets/cost_estimate_icon_213134.ico src/main.py
 
     - name: Upload Windows artifact
