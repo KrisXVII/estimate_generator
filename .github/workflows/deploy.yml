@@ -57,17 +57,6 @@ jobs:
         --collect-all docx
         --icon=assets/cost_estimate_icon_213134.icns src/main.py
 
-    - name: List downloaded files
-      run: |
-        echo "=== Current directory ==="
-        pwd
-        echo "=== Files in current directory ==="  
-        ls -la
-        echo "=== Files from Windows artifact ==="
-        ls -la Estimate_Generator_Win.exe || echo "No Windows exe"
-        echo "=== Files from macOS artifact ==="
-        ls -la *.zip || echo "No zip files"
-
     - name: Create .app zip
       run: |
         mkdir -p temp_release
@@ -76,11 +65,29 @@ jobs:
         cd temp_release
         zip -r ../Estimate-Generator-MacOS.zip .
 
+    - name: List downloaded files
+      run: |
+        echo "=== Current directory ==="
+        pwd
+        echo "=== Files in current directory ==="  
+        ls -la
+        echo "=== Files from macOS artifact ==="
+        ls -la *.zip || echo "No zip files"
+
     - name: Upload macOS artifact
       uses: actions/upload-artifact@v4
       with:
         name: Estimate_Generator_MacOS
         path: Estimate-Generator-MacOS.zip
+
+    - name: List downloaded files2
+      run: |
+        echo "=== Current directory ==="
+        pwd
+        echo "=== Files in current directory ==="  
+        ls -la
+        echo "=== Files from macOS artifact ==="
+        ls -la *.zip || echo "No zip files"
 
   create-release:
     needs: [ build-windows, build-macos ]
