@@ -9,11 +9,15 @@ This file was created with ChangelogManager 0.0.1, do not modify it directly.
 
 ## [Unreleased]
 
-## [1.0.2] - 2025-10-05
+## [1.1.3] - 2025-10-05
+### Fixed
+- png inclusion in Windows bundle build
+
+## [1.1.2] - 2025-10-05
 ### Fixed
 - Database location in bundled Windows app
 
-## [1.0.1] - 2025-10-05
+## [1.1.1] - 2025-10-05
 ### Fixed
 - Database location in bundled macOS app
 
