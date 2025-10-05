@@ -32,11 +32,11 @@ class SettingsDB:
         cursor.execute('SELECT COUNT(*) FROM business_settings')
         if cursor.fetchone()[0] == 0:
             defaults = [
-                ('company', 'La Tua Azienda'),
-                ('address', 'Il Tuo Indirizzo'),
+                ('company', 'Nome Azienda'),
+                ('address', "Via Roma, 28, TO"),
                 ('city', 'Torino'),
-                ('tax_code', 'CODICEFISCALE'),
-                ('vat_id', 'IT01234567890'),
+                ('tax_code', "NTAPQL61S01D568L"),
+                ('vat_id', "IT17556120099"),
                 ('email', 'example@gmail.com')
             ]
             cursor.executemany(
