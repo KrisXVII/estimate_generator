@@ -10,7 +10,9 @@ import subprocess
 import os
 from pathlib import Path
 from app.views.custom_form_field import FormField
-from database import SettingsDB
+from app.database.db import SettingsDB
+
+db = SettingsDB()
 
 def generate_estimate():
     document = Document()
@@ -18,8 +20,6 @@ def generate_estimate():
     document.sections[0].header_distance = Inches(1.5)
     table = header.add_table(rows=1, cols=3, width=Inches(6.5))  # Full page width
     table.autofit = False
-
-    db = SettingsDB()
 
     # col1
     left_col = table.cell(0, 0)
@@ -91,12 +91,12 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout(widget)
         self.setFixedSize(QSize(500, 800))
 
-        self.company_field = FormField("Nome Azienda")
-        self.address_field = FormField("Indirizzo", "Via Roma, 28, TO")
-        self.city_field = FormField("Città", "Roma")
-        self.tax_code_field = FormField("Codice Fiscale", "NTAPQL61S01D568L", "[A-Z0-9]{0,16}")
-        self.vat_field = FormField("Partita IVA", "17556120099")
-        self.email_field = FormField("Email", "example@gmail.com")
+        self.company_field = FormField("Nome Azienda", db.get_setting('company'))
+        self.address_field = FormField("Indirizzo", db.get_setting('address'))
+        self.city_field = FormField("Città", db.get_setting('city'))
+        self.tax_code_field = FormField("Codice Fiscale", db.get_setting('tax_code'), "[A-Z0-9]{0,16}")
+        self.vat_field = FormField("Partita IVA", db.get_setting('vat_id'))
+        self.email_field = FormField("Email", db.get_setting('email'))
 
         button_layout = QHBoxLayout()
 
@@ -120,8 +120,6 @@ class MainWindow(QMainWindow):
         return widget
 
     def save_settings(self):
-
-        db = SettingsDB()
 
         params = {
             "company": self.company_field.input.text(),
