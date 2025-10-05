@@ -3,19 +3,24 @@ import os
 import sys
 from pathlib import Path
 
+def get_db_path():
+    if getattr(sys, 'frozen', False):
+        # Running as bundled app - use ~/Library/Application Support/
+        app_name = "EstimateGenerator"
+        app_support_dir = Path.home() / "Library" / "Application Support" / app_name
+    else:
+        # Development - use project root
+        app_support_dir = Path(__file__).parent.parent.parent
+
+    # Create directory if it doesn't exist
+    app_support_dir.mkdir(parents=True, exist_ok=True)
+
+    return app_support_dir / "estimates.db"
 
 class SettingsDB:
     def __init__(self):
-        self.db_path = self.get_db_path()
+        self.db_path = get_db_path()
         self.init_db()
-
-    def get_db_path(self):
-
-        if getattr(sys, 'frozen', False):
-            base_path = Path(sys.executable).parent
-        else:
-            base_path = Path(__file__).parent.parent
-        return base_path / "estimates.db"
 
     def init_db(self):
 
@@ -43,7 +48,6 @@ class SettingsDB:
                 'INSERT INTO business_settings (setting_key, setting_value) VALUES (?, ?)',
                 defaults
             )
-            print("Default settings inserted")
 
         conn.commit()
         conn.close()

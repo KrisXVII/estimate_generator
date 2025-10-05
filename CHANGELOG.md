@@ -9,6 +9,10 @@ This file was created with ChangelogManager 0.0.1, do not modify it directly.
 
 ## [Unreleased]
 
+## [1.0.1] - 2025-10-05
+### Fixed
+- Database location in bundled macOS app
+
 ## [1.1.0] - 2025-10-05
 ### Added
 - Local DB implementation with SQLite
